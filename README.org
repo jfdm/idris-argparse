@@ -28,6 +28,8 @@ convOpts (KeyValue k v) = Nothing
 convOpts (Files xs) = Just $ Args xs
 convOpts (Flag x) = case x of
     "verbose" => Just Verbose
+    "help"    => Just Help
+    "version" => Just Version
     otherwise => Nothing
 
 

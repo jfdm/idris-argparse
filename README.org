@@ -1,0 +1,41 @@
+#+TITLE: Idris ArgParse
+#+AUTHOR: Jan de Muijnck-Hughes
+#+DATE: [2014-12-23 Tue]
+
+A simple argument parser written in Idris.
+
+* What
+I was stuck on a train with no internet for several hours and decided to create a naive argument parser in Idris.
+It is naive in the sense that I have not written combinators before (see optparse-applicative) nor could think of a =CmdOptions= style.
+
+Library consumers must declare their options data type and a means to convert an =Arg= to an instance of their options data type. The library takes care of parsing the args string to args and application of the converstion.
+
+This code is cheap, dirty, and could do with some improvement. Ideally, the converstion from an =Arg= to the user's =Opt= should be implicit and hidden from the user but it is something that works
+
+* Example
+
+#+BEGIN_SRC
+||| Options Data Type
+data Opt : Type where
+  Verbose : Opt
+  Args    : List String -> Opt
+  Help    : Opt
+  Version : Opt
+
+||| Convert Arguments into Options
+convOpts : Arg -> Maybe Opt
+convOpts (KeyValue k v) = Nothing
+convOpts (Files xs) = Just $ Args xs
+convOpts (Flag x) = case x of
+    "verbose" => Just Verbose
+    otherwise => Nothing
+
+
+main : IO ()
+main = do
+  args <- getArgs
+  let as = fromMaybe [] (tail' args)
+  opts <- run $ parseArgs (convOpts) (unwords $ as)
+  print opts
+
+#+END_SRC

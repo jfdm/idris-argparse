@@ -14,7 +14,7 @@ This code is cheap, dirty, and could do with some improvement. Ideally, the conv
 
 * Example
 
-#+BEGIN_SRC
+#+BEGIN_SRC idris
 ||| Options Data Type
 data Opt : Type where
   Verbose : Opt

@@ -1,0 +1,11 @@
+package argparsebin
+
+opts = "-p lightyear -p effects -p argparse"
+
+sourcedir = main
+
+modules = Main
+
+main = Main
+
+executable = a.out

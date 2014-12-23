@@ -1,0 +1,8 @@
+package argparse
+
+opts = "-p effects -p lightyear"
+
+modules = Options.ArgParse.Utils
+        , Options.ArgParse.Parser
+        , Options.ArgParse.Model
+        , Options.ArgParse

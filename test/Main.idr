@@ -3,7 +3,7 @@ module Main
 import System
 
 import TestRunner
-import Options.ArgParse
+import ArgParse
 
 ||| Programs Options
 data Opt : Type where

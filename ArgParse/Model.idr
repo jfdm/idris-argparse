@@ -3,6 +3,7 @@
 -- Copyright   : (c) Jan de Muijnck-Hughes
 -- License     : see LICENSE
 -- --------------------------------------------------------------------- [ EOH ]
+module ArgParse.Model
 
 data Arg : Type where
   Flag : String -> Arg

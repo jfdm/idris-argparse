@@ -3,7 +3,7 @@
 -- Copyright   : (c) Jan de Muijnck-Hughes
 -- License     : see LICENSE
 -- --------------------------------------------------------------------- [ EOH ]
-module Options.ArgParse.Parser
+module ArgParse.Parser
 
 import Control.Monad.Identity
 
@@ -11,8 +11,8 @@ import Lightyear.Core
 import Lightyear.Combinators
 import Lightyear.Strings
 
-import Options.ArgParse.Model
-import Options.ArgParse.Utils
+import ArgParse.Model
+import ArgParse.Utils
 
 %access private
 

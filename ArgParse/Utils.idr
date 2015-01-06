@@ -3,7 +3,7 @@
 -- Copyright   : (c) Jan de Muijnck-Hughes
 -- License     : see LICENSE
 -- --------------------------------------------------------------------- [ EOH ]
-module Options.ArgParse.Utils
+module ArgParse.Utils
 
 import Control.Monad.Identity
 

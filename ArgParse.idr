@@ -32,7 +32,13 @@ getOpts conv (x :: xs) = case conv x of
       os <- getOpts conv xs
       pure (o :: os)
 
-parseArgs : (Arg -> Maybe a) -> List String -> {[EXCEPTION String]} Eff $ List a
+||| Parse arguments and produce a list of options.
+|||
+||| @conv A user supplied conversion function used to convert..
+||| @args The *unmodified* result of calling `System.getArgs` or `Effects.System.geArgs`.
+parseArgs : (conv : Arg -> Maybe a)
+          -> (args : List String)
+          -> {[EXCEPTION String]} Eff $ List a
 parseArgs func (a::as) = do
     case parse args (unwords as) of
       Left err  => raise $ err
@@ -48,7 +54,15 @@ convOpts ini conv (x :: xs) = do
     os <- convOpts (conv ini x) conv xs
     pure os
 
-parseArgsRec : a -> (a -> Arg -> a) -> List String -> {[EXCEPTION String]} Eff $ a
+||| Parse arguments using a record.
+|||
+||| @orig The starting value of the record representing the options.
+||| @conv A user supplied conversion function used to update the record.
+||| @args The *unmodified* result of calling `System.getArgs` or `Effects.System.geArgs`.
+parseArgsRec : (orig : a)
+             -> (conv : a -> Arg -> a)
+             -> (args : List String)
+             -> {[EXCEPTION String]} Eff $ a
 parseArgsRec ini func (a::as) = do
     case parse args (unwords as) of
       Left err  => raise err

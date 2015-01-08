@@ -7,8 +7,7 @@ module ArgParse.Parser
 
 import Control.Monad.Identity
 
-import Lightyear.Core
-import Lightyear.Combinators
+import Lightyear
 import Lightyear.Strings
 
 import ArgParse.Model

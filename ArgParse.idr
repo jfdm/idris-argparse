@@ -48,11 +48,13 @@ parseArgs func (a::as) = do
 -- ----------------------------------------------------------------- [ Records ]
 
 private
-convOpts : (Arg -> a -> a) -> a -> List Arg -> {[EXCEPTION String]} Eff a
+convOpts : (Arg -> a -> Maybe a) -> a -> List Arg -> {[EXCEPTION String]} Eff a
 convOpts  _   o Nil       = pure o
-convOpts conv o (x :: xs) = do
-    os <- convOpts conv (conv x o) xs
-    pure os
+convOpts conv o (x :: xs) = case conv x o of
+    Nothing => raise "Invalid Option"
+    Just o' =>  do
+      os <- convOpts conv o' xs
+      pure os
 
 ||| Parse arguments using a record.
 |||
@@ -60,7 +62,7 @@ convOpts conv o (x :: xs) = do
 ||| @conv A user supplied conversion function used to update the record.
 ||| @args The *unmodified* result of calling `System.getArgs` or `Effects.System.geArgs`.
 parseArgsRec : (orig : a)
-             -> (conv : Arg -> a -> a)
+             -> (conv : Arg -> a -> Maybe a)
              -> (args : List String)
              -> {[EXCEPTION String]} Eff $ a
 parseArgsRec o func (a::as) = do

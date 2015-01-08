@@ -27,7 +27,7 @@ private
 getOpts : (Arg -> Maybe a) -> List Arg -> {[EXCEPTION String]} Eff $ List a
 getOpts _    Nil       = pure $ Nil
 getOpts conv (x :: xs) = case conv x of
-    Nothing => raise "Invalid Option"
+    Nothing => raise $ "Invalid Option " ++ show x
     Just o  => do
       os <- getOpts conv xs
       pure (o :: os)
@@ -51,7 +51,7 @@ private
 convOpts : (Arg -> a -> Maybe a) -> a -> List Arg -> {[EXCEPTION String]} Eff a
 convOpts  _   o Nil       = pure o
 convOpts conv o (x :: xs) = case conv x o of
-    Nothing => raise "Invalid Option"
+    Nothing => raise $ "Invalid Option " ++ show x
     Just o' =>  do
       os <- convOpts conv o' xs
       pure os

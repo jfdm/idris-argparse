@@ -38,4 +38,9 @@ pathChar = urlChar <|> satisfy isAlphaNum <?> "Path Char"
 ||| Parse URIs
 url : Parser String
 url = map pack (some pathChar) <?> "URL"
+
+
+literallyBetween : Char -> Parser String
+literallyBetween c = map pack $ between (char c) (char c) (some (satisfy (/= c)))
+
 -- --------------------------------------------------------------------- [ EOF ]

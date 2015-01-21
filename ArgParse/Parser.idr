@@ -38,14 +38,14 @@ kvLong : Parser Arg
 kvLong = do
     key <- long
     string "="
-    value <- literallyBetween '\"'
+    value <- url
     pure $ KeyValue key value
 
 kvShort : Parser Arg
 kvShort = do
     k <- short
     char ' '
-    v <- literallyBetween '\"'
+    v <- url
     pure $ KeyValue k v
 
 options : Parser Arg

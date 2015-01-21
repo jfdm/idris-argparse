@@ -13,6 +13,20 @@ import Lightyear.Strings
 
 %access public
 -- ----------------------------------------------------------------- [ Parsers ]
+
+manyTill : Monad m => ParserT m String a
+                   -> ParserT m String b
+                   -> ParserT m String (List a)
+manyTill p end = scan
+  where
+    scan = do { end; return List.Nil } <|>
+           do { x <- p; xs <- scan; return (x::xs)}
+
+
+||| EOL
+eol : Parser ()
+eol = char '\n'
+
 ||| Any Char
 anyChar : Parser Char
 anyChar = satisfy (const True)

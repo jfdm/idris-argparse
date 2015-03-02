@@ -25,7 +25,7 @@ long = do
 
 short : Parser String
 short = do
-    k <- string "-" $> satisfy isAlphaNum
+    k <- string "-"*> satisfy isAlphaNum
     pure $ cast k
 
 flagLong : Parser Arg
@@ -54,8 +54,8 @@ options = kvShort <|> kvLong <|> flagShort <|> flagLong <?> "Options"
 public
 args : Parser $ List Arg
 args = do
-    os <- many (options <$ space)
-    fs <- many $ (url <$ space)
+    os <- many (options <* space)
+    fs <- many $ (url <* space)
     let os' = if isNil fs
       then os
       else (os ++ [Files fs])

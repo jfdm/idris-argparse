@@ -25,7 +25,7 @@ manyTill p end = scan
 
 ||| EOL
 eol : Parser ()
-eol = char '\n'
+eol = char '\n' *> return () <?> "eol"
 
 ||| Any Char
 anyChar : Parser Char

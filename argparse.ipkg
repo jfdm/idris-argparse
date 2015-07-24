@@ -1,6 +1,6 @@
 package argparse
 
-opts = "-p effects -p lightyear"
+opts = "-p effects -p lightyear --typeintype"
 
 modules = ArgParse.Utils
         , ArgParse.Parser

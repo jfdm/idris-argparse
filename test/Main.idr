@@ -32,11 +32,13 @@ instance Eq Opt where
 
 ||| Convert Arguments into Options
 convOpts : Arg -> Maybe Opt
-convOpts (KeyValue k v) = case k of
-   "from"    => Just $ From v
-   otherwise => Nothing
+convOpts (KeyValue k v) =
+  case k of
+    "from"    => Just $ From v
+    otherwise => Nothing
 convOpts (Files xs) = Just $ Args xs
-convOpts (Flag x) = case x of
+convOpts (Flag x) =
+  case x of
     "help"    => Just Help
     "verbose" => Just Verbose
     otherwise => Nothing

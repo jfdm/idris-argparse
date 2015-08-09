@@ -24,7 +24,9 @@ import ArgParse.Parser
 -- -------------------------------------------------------------------- [ Body ]
 
 private
-getOpts : (Arg -> Maybe a) -> List Arg -> {[EXCEPTION String]} Eff $ List a
+getOpts : (Arg -> Maybe a)
+       -> List Arg
+       -> Eff (List a) [EXCEPTION String]
 getOpts _    Nil       = pure $ Nil
 getOpts conv (x :: xs) = case conv x of
     Nothing => raise $ "Invalid Option " ++ show x
@@ -38,17 +40,20 @@ getOpts conv (x :: xs) = case conv x of
 ||| @args The *unmodified* result of calling `System.getArgs` or `Effects.System.geArgs`.
 parseArgs : (conv : Arg -> Maybe a)
           -> (args : List String)
-          -> {[EXCEPTION String]} Eff $ List a
+          -> Eff (List a) [EXCEPTION String]
 parseArgs func (a::as) = do
     case parse args (unwords as) of
-      Left err  => raise $ err
+      Left err  => raise err
       Right res => do
         r <- getOpts func res
         pure r
 -- ----------------------------------------------------------------- [ Records ]
 
 private
-convOpts : (Arg -> a -> Maybe a) -> a -> List Arg -> {[EXCEPTION String]} Eff a
+convOpts : (Arg -> a -> Maybe a)
+        -> a
+        -> List Arg
+        -> Eff a [EXCEPTION String]
 convOpts  _   o Nil       = pure o
 convOpts conv o (x :: xs) = case conv x o of
     Nothing => raise $ "Invalid Option " ++ show x
@@ -64,7 +69,7 @@ convOpts conv o (x :: xs) = case conv x o of
 parseArgsRec : (orig : a)
              -> (conv : Arg -> a -> Maybe a)
              -> (args : List String)
-             -> {[EXCEPTION String]} Eff $ a
+             -> Eff a [EXCEPTION String]
 parseArgsRec o func (a::as) = do
     case parse args (unwords as) of
       Left err  => raise err

@@ -16,10 +16,10 @@ TestEffs : List EFFECT
 TestEffs = [STDIO, EXCEPTION String]
 
 Test : Type
-Test = {TestEffs} Eff ()
+Test = Eff () TestEffs
 
 -- ------------------------------------------------------------- [ Test Runner ]
-tests : List Test -> {TestEffs} Eff ()
+tests : List Test -> Eff () TestEffs
 tests Nil = do
     putStrLn "All tests passed"
     pure ()

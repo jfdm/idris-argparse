@@ -19,9 +19,9 @@ manyTill : Monad m => ParserT m String a
                    -> ParserT m String (List a)
 manyTill p end = scan
   where
+    scan : Monad m => ParserT m String (List a)
     scan = do { end; return List.Nil } <|>
            do { x <- p; xs <- scan; return (x::xs)}
-
 
 ||| EOL
 eol : Parser ()
@@ -54,7 +54,11 @@ url : Parser String
 url = map pack (some pathChar) <?> "URL"
 
 
+literallyBetweenLR : Char -> Char -> Parser String
+literallyBetweenLR l r =
+    map pack $ between (lexeme $ char l) (lexeme $ char r) (some (satisfy (/= r)))
+
 literallyBetween : Char -> Parser String
-literallyBetween c = map pack $ between (char c) (char c) (some (satisfy (/= c)))
+literallyBetween c = literallyBetweenLR c c
 
 -- --------------------------------------------------------------------- [ EOF ]

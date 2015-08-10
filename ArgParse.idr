@@ -14,8 +14,7 @@ import public Lightyear.Strings
 import public ArgParse.Model
 
 import ArgParse.Parser
-
-import public ArgParse.ErrorEff
+import public ArgParse.Error
 
 %access public
 

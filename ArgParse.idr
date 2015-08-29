@@ -44,10 +44,13 @@ convOpts conv o (x :: xs) = case conv x o of
 ||| @orig The starting value of the record representing the options.
 ||| @conv A user supplied conversion function used to update the record.
 ||| @args The *unmodified* result of calling `System.getArgs` or `Effects.System.geArgs`.
+covering
 parseArgs : (orig : a)
              -> (conv : Arg -> a -> Maybe a)
              -> (args : List String)
              -> Eff a ArgParseEffs
+parseArgs o _    Nil     = pure o
+parseArgs o _    [a]     = pure o
 parseArgs o func (a::as) = do
     case parse args (unwords as) of
       Left err  => raise (ParseError err)

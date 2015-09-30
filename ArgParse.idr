@@ -5,9 +5,6 @@
 -- --------------------------------------------------------------------- [ EOH ]
 module ArgParse
 
-import public Effects
-import public Effect.Exception
-
 import public Lightyear
 import public Lightyear.Strings
 
@@ -18,23 +15,16 @@ import public ArgParse.Error
 
 %access public
 
--- -------------------------------------------------------------------- [ Body ]
-ArgParseEffs : List EFFECT
-ArgParseEffs = ['argparse ::: EXCEPTION ArgParseError]
-
-raise : ArgParseError -> Eff b ArgParseEffs
-raise err = 'argparse :- Exception.raise err
-
 -- ----------------------------------------------------------------- [ Records ]
 
 private
 convOpts : (Arg -> a -> Maybe a)
         -> a
         -> List Arg
-        -> Eff a ArgParseEffs
+        -> Either ArgParseError a
 convOpts  _   o Nil       = pure o
 convOpts conv o (x :: xs) = case conv x o of
-    Nothing => raise (InvalidOption x)
+    Nothing => Left (InvalidOption x)
     Just o' => do
       os <- convOpts conv o' xs
       pure os
@@ -48,12 +38,12 @@ covering
 parseArgs : (orig : a)
              -> (conv : Arg -> a -> Maybe a)
              -> (args : List String)
-             -> Eff a ArgParseEffs
+             -> Either ArgParseError a
 parseArgs o _    Nil     = pure o
 parseArgs o _    [a]     = pure o
 parseArgs o func (a::as) = do
     case parse args (unwords as) of
-      Left err  => raise (ParseError err)
+      Left err  => Left (ParseError err)
       Right res => do
         r <- convOpts func o res
         pure r

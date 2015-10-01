@@ -43,7 +43,7 @@ kvLong = do
 kvShort : Parser Arg
 kvShort = do
     k <- short
-    char ' '
+    space
     v <- url
     pure $ KeyValue k v
 
@@ -53,8 +53,8 @@ options = kvShort <|> kvLong <|> flagShort <|> flagLong <?> "Options"
 public
 args : Parser $ List Arg
 args = do
-    os <- many (options <* space)
-    fs <- many $ (url <* space)
+    os <- many (options <* spaces)
+    fs <- many $ (url <* spaces)
     let os' = if isNil fs
       then os
       else (os ++ [Files fs])

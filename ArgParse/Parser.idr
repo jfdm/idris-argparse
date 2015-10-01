@@ -5,9 +5,8 @@
 -- --------------------------------------------------------------------- [ EOH ]
 module ArgParse.Parser
 
-import Control.Monad.Identity
-
 import Lightyear
+import Lightyear.Char
 import Lightyear.Strings
 
 import ArgParse.Model
@@ -20,12 +19,12 @@ import ArgParse.Utils
 long : Parser String
 long = do
     string "--"
-    k <- map (pack) $ some (satisfy (isAlphaNum))
+    k <- map pack $ some alphaNum
     pure k
 
 short : Parser String
 short = do
-    k <- string "-"*> satisfy isAlphaNum
+    k <- string "-" *> alphaNum
     pure $ cast k
 
 flagLong : Parser Arg

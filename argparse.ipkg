@@ -1,9 +1,14 @@
 package argparse
 
 pkgs = lightyear
+     , test
 
 modules = ArgParse.Utils
         , ArgParse.Parser
         , ArgParse.Error
         , ArgParse.Model
         , ArgParse
+
+        , ArgParse.Test
+
+tests = ArgParse.Test.runTests

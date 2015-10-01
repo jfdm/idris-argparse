@@ -16,5 +16,4 @@ instance (Show Arg) => Show ArgParseError where
   show (InvalidOption o) = "Invalid Option " ++ show o
   show (ParseError err)  = "Parsing Error\n" ++ err
 
-
 -- --------------------------------------------------------------------- [ EOF ]

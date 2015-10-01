@@ -4,9 +4,9 @@ IDRIS := idris
 LIB   := argparse
 OPTS  :=
 
-.PHONY: clean lib
+.PHONY: clean lib clobber check test doc
 
-install: lib
+install:
 	${IDRIS} ${OPTS} --install ${LIB}.ipkg
 
 lib:
@@ -19,13 +19,13 @@ clean:
 clobber: clean
 	find . -name "*.ibc" -delete
 
-check: clobber
+check:
 	${IDRIS} --checkpkg ${LIB}.ipkg
 
-test: install
-	$(MAKE) -C test build
-	(cd test; ./a.out)
-	$(MAKE) -C test clean
+test:
+	${IDRIS} --testpkg ${LIB}.ipkg
 
 doc:
 	${IDRIS} --mkdoc ${LIB}.ipkg
+
+# ---------------------------------------------------------------------- [ EOF ]

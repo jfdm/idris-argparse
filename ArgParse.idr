@@ -36,9 +36,9 @@ convOpts conv o (x :: xs) = case conv x o of
 ||| @args The *unmodified* result of calling `System.getArgs` or `Effects.System.geArgs`.
 covering
 parseArgs : (orig : a)
-             -> (conv : Arg -> a -> Maybe a)
-             -> (args : List String)
-             -> Either ArgParseError a
+        -> (conv : Arg -> a -> Maybe a)
+        -> (args : List String)
+        -> Either ArgParseError a
 parseArgs o _    Nil     = pure o
 parseArgs o _    [a]     = pure o
 parseArgs o func (a::as) = do

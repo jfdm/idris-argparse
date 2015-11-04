@@ -6,30 +6,46 @@ A simple argument parser written in Idris.
 
 * What
 I was stuck on a train with no internet for several hours and decided to create a naive argument parser in Idris.
-It is naive in the sense that I have not written combinators before (see optparse-applicative) nor could think of a =CmdOptions= style.
+It is naive in the sense that I have not written combinators before (see optparse-applicative) nor could think of a =CmdOptions= style for implementation.
 
-Library consumers must declare their options data type and a means to convert an =Arg= to an instance of their options data type. The library takes care of parsing the args string to args and application of the converstion.
+Library consumers must declare their options data type and a means to convert an =Arg= to an instance of their options data type. The library takes care of parsing the args string to args and application of the conversion.
 
-This code is cheap, dirty, and could do with some improvement. Ideally, the converstion from an =Arg= to the user's =Opt= should be implicit and hidden from the user but it is something that works
+This code is *cheap and dirty*, and could do with some improvement.
+Explore other implementation styles is something for the future.
+Having used both =optparse-applicative= and =CmdOptions= I am, personally, not completely swayed to either style.
+If you can convince me great, if not try harder.
 
 * Example
 
+For a more in-depth example see =ArgParse/Test.idr=
+
 #+BEGIN_SRC idris
 ||| Options Data Type
-data Opt : Type where
-  Verbose : Opt
-  Args    : List String -> Opt
-  Help    : Opt
-  Version : Opt
+record MyFirstOpts where
+  constructor MkOpts
+  from    : Maybe String
+  verbose : Bool
+  help    : Bool
+  version : Bool
+  files   : List String
+
+||| Default settings
+defOpts : Opts
+defOpts = MkOpts Nothing False False False Nil
 
 ||| Convert Arguments into Options
-convOpts : Arg -> Maybe Opt
-convOpts (KeyValue k v) = Nothing
-convOpts (Files xs) = Just $ Args xs
+convOpts : Arg -> Opts -> Maybe Opts
+convOpts (Files xs)     o = Just $ record {args = xs} o
+
+convOpts (KeyValue k v) o =
+  case k of
+    "from"    => Just $ record {from = Just v} o
+    otherwise => Nothing
+
 convOpts (Flag x) = case x of
-    "verbose" => Just Verbose
-    "help"    => Just Help
-    "version" => Just Version
+    "verbose" => Just $ record {verbose = True} o
+    "help"    => Just $ record {help    = True} o
+    "version" => Just $ record {version = True} o
     otherwise => Nothing
 
 
@@ -37,7 +53,6 @@ main : IO ()
 main = do
   args <- getArgs
   let as = fromMaybe [] (tail' args)
-  opts <- run $ parseArgs (convOpts) (unwords $ as)
-  print opts
-
+  let os = parseArgs defOpts (convOpts) (unwords $ as)
+  print os
 #+END_SRC

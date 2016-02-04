@@ -50,7 +50,7 @@ kvShort = do
 options : Parser Arg
 options = kvShort <|> kvLong <|> flagShort <|> flagLong <?> "Options"
 
-public
+export
 args : Parser $ List Arg
 args = do
     os <- many (options <* spaces)

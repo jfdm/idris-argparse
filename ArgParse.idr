@@ -13,7 +13,7 @@ import public ArgParse.Model
 import ArgParse.Parser
 import public ArgParse.Error
 
-%access public
+%access export
 
 -- ----------------------------------------------------------------- [ Records ]
 

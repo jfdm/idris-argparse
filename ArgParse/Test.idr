@@ -9,6 +9,8 @@ import ArgParse
 import ArgParse.Error
 import Test.Assertions
 
+%access private
+
 ||| Program Options
 record Opts where
   constructor MkOpts
@@ -18,10 +20,10 @@ record Opts where
   version : Bool
   args    : List String
 
-instance Show Opts where
+Show Opts where
   show (MkOpts f v h ve as) = unwords ["MkOpts", show f, show v, show h, show ve, show as]
 
-instance Eq Opts where
+Eq Opts where
   (==) (MkOpts a b c d e) (MkOpts a' b' c' d' e') = a == a' && b == b' && c == c' && d' == d' && e == e'
 
 ||| Convert Arguments into Options
@@ -52,6 +54,7 @@ test1 =
         assertFalse $ help o
         assertNothing $ from o
 
+export
 runTests : IO ()
 runTests = do
     putStrLn $ heading "Testing ArgParse"

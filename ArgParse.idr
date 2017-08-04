@@ -5,9 +5,6 @@
 -- --------------------------------------------------------------------- [ EOH ]
 module ArgParse
 
-import public Lightyear
-import public Lightyear.Strings
-
 import public ArgParse.Model
 
 import ArgParse.Parser
@@ -42,7 +39,7 @@ parseArgs : (orig : a)
 parseArgs o _    Nil     = pure o
 parseArgs o _    [a]     = pure o
 parseArgs o func (a::as) = do
-    case parse args (unwords as) of
+    case parseArgs (unwords as) of
       Left err  => Left (ParseError err)
       Right res => do
         r <- convOpts func o res

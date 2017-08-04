@@ -1,9 +1,9 @@
 package argparse
 
-pkgs = lightyear
+pkgs = contrib
      , test
 
-modules = ArgParse.Utils
+modules = ArgParse.Lexer
         , ArgParse.Parser
         , ArgParse.Error
         , ArgParse.Model

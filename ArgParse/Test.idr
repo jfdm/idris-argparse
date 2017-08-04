@@ -50,21 +50,21 @@ test1 =
         putStrLn "Err"
         pure ()
       Right o => do
-        assertTrue $ verbose o
-        assertFalse $ help o
-        assertNothing $ from o
+        printLn $ !(assertTrue $ verbose o)
+        printLn $ !(assertFalse $ help o)
+        printLn $ !(assertNothing $ from o)
 
 export
 runTests : IO ()
 runTests = do
     putStrLn $ heading "Testing ArgParse"
     test1
-    assertRight $ parseArgs defOpts convOpts Nil
+    printLn !(assertRight $ parseArgs defOpts convOpts Nil)
 
     let res' = parseArgs defOpts convOpts ["exe", "--help", "--verbose", "--from=conv"]
     case res' of
       Left _    => putStrLn "Err"
       Right res => do
-        assertTrue $ from res == Just "conv"
+        printLn !(assertTrue $ from res == Just "conv")
 
 -- --------------------------------------------------------------------- [ EOF ]

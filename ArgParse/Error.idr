@@ -8,14 +8,16 @@ module ArgParse.Error
 
 import public ArgParse.Model
 
+import ArgParse.Parser
+
 %access public export
 
 data ArgParseError : Type where
   InvalidOption : Arg -> ArgParseError
-  ParseError : String -> ArgParseError
+  ParseError : ParseError -> ArgParseError
 
 implementation (Show Arg) => Show ArgParseError where
   show (InvalidOption o) = "Invalid Option " ++ show o
-  show (ParseError err)  = "Parsing Error\n" ++ err
+  show (ParseError err)  = "Parsing Error\n" ++ show err
 
 -- --------------------------------------------------------------------- [ EOF ]

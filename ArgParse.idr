@@ -11,7 +11,7 @@ import ArgParse.Parser
 import public ArgParse.Error
 
 %access export
-
+%default total
 -- ----------------------------------------------------------------- [ Records ]
 
 private
@@ -31,7 +31,6 @@ convOpts conv o (x :: xs) = case conv x o of
 ||| @orig The starting value of the record representing the options.
 ||| @conv A user supplied conversion function used to update the record.
 ||| @args The *unmodified* result of calling `System.getArgs` or `Effects.System.geArgs`.
-covering
 parseArgs : (orig : a)
         -> (conv : Arg -> a -> Maybe a)
         -> (args : List String)

@@ -28,7 +28,7 @@ Eq Opts where
 
 ||| Convert Arguments into Options
 convOpts : Arg -> Opts -> Maybe Opts
-convOpts (Files xs)     o = Just $ record {args = xs} o
+convOpts (File x)     o = Just $ record {args = x :: args o} o
 convOpts (KeyValue k v) o =
   case k of
     "from"    => Just $ record {from = Just v} o

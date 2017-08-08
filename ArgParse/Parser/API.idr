@@ -21,39 +21,24 @@ EmptyRule ty = Grammar (TokenData Token) False ty
 -- Some basic parsers used by all the intermediate forms
 
 export
-shortFlag : Rule ()
+shortFlag : Rule String
 shortFlag
     = terminal (\x => case tok x of
-                           SFlag _ => Just ()
+                           SFlag f => Just (substr 1 (length f) f)
                            _     => Nothing)
 
 export
-longFlag : Rule ()
+longFlag : Rule String
 longFlag
     = terminal (\x => case tok x of
-                           LFlag _ => Just ()
+                           LFlag f => Just (substr 2 (length f) f)
                            _       => Nothing)
-
-export
-str : Rule String
-str = terminal
-    (\x => case tok x of
-             Str s => Just s
-             _     => Nothing)
-
-export
-chr : Rule String
-chr = terminal
-    (\x => case tok x of
-             Ch s => Just s
-             _     => Nothing)
-
 
 export
 arg : Rule String
 arg = terminal
   (\x => case tok x of
-           Arg s => Just s
+           Arg s => Just (trim s)
            _     => Nothing)
 
 export
@@ -62,22 +47,6 @@ equals = terminal
   (\x => case tok x of
            Equals _ => Just ()
            _        => Nothing)
-
-
-export
-int : Rule Integer
-int = terminal
-  (\x => case tok x of
-           NumI s => Just s
-           _      => Nothing)
-
-export
-double : Rule Double
-double = terminal
-  (\x => case tok x of
-           NumD s => Just s
-           _      => Nothing)
-
 
 export
 quoted : Rule String

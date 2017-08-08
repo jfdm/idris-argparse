@@ -14,52 +14,36 @@ import ArgParse.Model
 
 -- ----------------------------------------------------------------- [ Parsers ]
 
-long : Rule String
-long = do
-    longFlag
-    k <- str
-    pure k
-
-short : Rule String
-short = do
-    shortFlag
-    k <- chr
-    pure $ k
-
 flagLong : Rule Arg
 flagLong = do
-  l <- long
+  l <- longFlag
   pure $ Flag l
 
 flagShort : Rule Arg
 flagShort = do
-   s <- short
+   s <- shortFlag
    pure $ Flag s
 
 kvLong : Rule Arg
 kvLong = do
-    key <- long
+    key <- longFlag
     equals
-    value <- (str <|> arg <|> quoted)
+    value <- (arg <|> quoted)
     pure $ KeyValue key value
 
 kvShort : Rule Arg
 kvShort = do
-    k <- short
-    v <- (str <|> arg <|> quoted)
+    k <- shortFlag
+    v <- (arg <|> quoted)
     pure $ KeyValue k v
 
 options : Rule Arg
-options = kvShort <|> kvLong <|> flagShort <|> flagLong
+options = kvShort <|> kvLong <|> flagShort <|> flagLong <|> (do fs <- arg; pure $ File fs)
 
 args : EmptyRule $ List Arg
 args = do
     os <- many options
-    fs <- many arg
-    let os' = if isNil fs
-      then os
-      else (os ++ [Files fs])
-    pure $ os'
+    pure $ os
 
 public export
 data ParseError = ParseFail String (Maybe (Int, Int)) (List Token)

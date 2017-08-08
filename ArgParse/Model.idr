@@ -10,11 +10,11 @@ module ArgParse.Model
 data Arg : Type where
   Flag : String -> Arg
   KeyValue : String -> String -> Arg
-  Files : List String -> Arg
+  File : String -> Arg
 
 Show Arg where
   show (Flag f) = "[Flag " ++ show f ++ "]"
   show (KeyValue k v) = "[KeyValue " ++ show k ++ " : " ++ show v ++ "]"
-  show (Files fs) = "[Files " ++ show fs ++ "]"
+  show (File fs) = "[File " ++ show fs ++ "]"
 
 -- --------------------------------------------------------------------- [ EOF ]

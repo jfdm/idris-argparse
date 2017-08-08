@@ -1,6 +1,6 @@
 #+TITLE: Idris ArgParse
 #+AUTHOR: Jan de Muijnck-Hughes
-#+DATE: [2014-12-23 Tue]
+#+DATE: [2014-08-08 Tue]
 
 A simple argument parser written in Idris.
 
@@ -35,7 +35,7 @@ defOpts = MkOpts Nothing False False False Nil
 
 ||| Convert Arguments into Options
 convOpts : Arg -> Opts -> Maybe Opts
-convOpts (Files xs)     o = Just $ record {args = xs} o
+convOpts (File f)     o = Just $ record {args = f :: args } o
 
 convOpts (KeyValue k v) o =
   case k of
@@ -51,8 +51,7 @@ convOpts (Flag x) = case x of
 
 main : IO ()
 main = do
-  args <- getArgs
-  let as = fromMaybe [] (tail' args)
-  let os = parseArgs defOpts (convOpts) (unwords $ as)
+  (a::args) <- getArgs
+  let os = parseArgs defOpts (convOpts) args
   print os
 #+END_SRC

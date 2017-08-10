@@ -52,10 +52,10 @@ export
 quoted : Rule String
 quoted = terminal
     (\x => case tok x of
-             Quoted s => Just $ rmQuotes (unpack s)
+             Quoted s => Just $ rmQuotes s
              _        => Nothing)
   where
-    rmQuotes : List Char -> String
-    rmQuotes xs = pack $ filter (=='"') xs
+    rmQuotes : String -> String
+    rmQuotes xs = pack $ filter (not . (==) '"') (unpack xs)
 
 -- --------------------------------------------------------------------- [ EOF ]
